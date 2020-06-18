@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Server list all</title>
+	<link rel="stylesheet" href="./codebase/webix.css" type="text/css" charset="utf-8" />
+	<script src="./codebase/webix.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./function.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div id="toolbar"></div>
+	<div id="table"></div>
+
+	<script type="text/javascript" charset="utf-8">
+		var table = {
+			// container: "table",
+			view: "datatable",
+			id: "table1",
+			url: "./data/server-list-all.json?nocache?v=' + Date.now()",
+			select: "row",
+			columns: [
+				{ id: "Name", header: ["Name", { content: "textFilter" }], sort: "string", adjust: true },
+				{ id: "ID", header: ["ID", { content: "textFilter" }], sort: "string", adjust: true },
+				{ id: "Status", header: ["Status", { content: "selectFilter" }], sort: "string", adjust: true },
+				{ id: "Networks", header: ["Networks", { content: "textFilter" }], sort: "string", adjust: true },
+				{ id: "Image Name", header: ["Image Name", { content: "textFilter" }], sort: "string", adjust: true },
+				{ id: "Flavor Name", header: ["Flavor Name", { content: "textFilter" }], sort: "string", adjust: true },
+				{ id: "Host", header: ["Host", { content: "selectFilter" }], sort: "string", adjust: true },
+				{ id: "Availability Zone", header: ["Availability Zone", { content: "textFilter" }], sort: "string", adjust: true },
+				{ id: "Properties", header: ["Properties", { content: "textFilter" }], sort: "string", adjust: true },
+				{ id: "Image ID", header: ["Image ID", { content: "textFilter" }], sort: "string", adjust: true },
+				{ id: "Flavor ID", header: ["Flavor ID", { content: "textFilter" }], sort: "string", adjust: true },
+				{ id: "Power State", header: ["Power State", { content: "selectFilter" }], sort: "string", adjust: true },
+			],
+			ready: function () {
+				this.getFilter("Name").focus();
+				if (this.count()) {
+					this.getHeaderNode("Name").innerHTML = "Name (" + this.count() + ")";
+				}
+			},
+			on: {
+				onAfterFilter: function () {
+					// this.getFilter("Name").focus();
+					if (this.count()) {
+						this.getHeaderNode("Name").innerHTML = "Name (" + this.count() + ")";
+					}
+				},
+			},
+		};
+
+		webix.ui({
+			rows: [table]
+		});
+
+		webix.ui.fullScreen();
+
+		var server_name = getUrlParameter('name');
+		if (server_name) {
+			webix.delay(function () {
+				$$("table1").getFilter("Name").value = server_name;
+				$$("table1").filterByAll();
+			}, null, null, 100);
+		}
+	</script>
+</body>
+
+</html>
