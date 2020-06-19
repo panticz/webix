@@ -57,10 +57,10 @@
 
 		var server_name = getUrlParameter('name');
 		if (server_name) {
-			webix.delay(function () {
+			$$("table1").waitData.then(function () {
 				$$("table1").getFilter("Name").value = server_name;
 				$$("table1").filterByAll();
-			}, null, null, 100);
+			})
 		}
 	</script>
 </body>
